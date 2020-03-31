@@ -1,22 +1,23 @@
 import React, {Component, Fragment} from 'react';
-import {gql} from 'apollo-boost';
 import {graphql} from 'react-apollo';
 import FormField from './FormField';
-import TextInput from './TextInput';
 import LabelField from './LabelField';
-import FormBlock from './FormBlock'
+import {getAutohrsQuery} from '../queries';
+import FormGroup from './FormGroup';
 
-const getAutohrsQuery = gql`
-    {
-        authors{
-            name
-            id
-        }
-    }
-`;
 
 class AddBook extends Component{
 
+    constructor(props)
+    {
+        super(props);
+
+        this.state = {
+            name: "",
+            genere: "",
+            authorid: ""
+        }
+    }
 
     displayAuthors(){
         const data = this.props.data;
@@ -32,19 +33,23 @@ class AddBook extends Component{
     render() {
         const bookName = ()=>{
             return(
-                <Fragment>
-                    <LabelField name="Book name:"/>
-                    <TextInput/>
-                </Fragment>
+                <FormGroup content={
+                    <Fragment>
+                        <LabelField name="Book name:"/>
+                        <input className="form-control" onChange={e =>{this.setState({name: e.target.value})}}/>
+                    </Fragment>
+                }/>
             );
         }
 
         const bookGenere = ()=>{
             return(
-                <Fragment>
-                    <LabelField name="Book genere:"/>
-                    <TextInput/>
-                </Fragment>
+                <FormGroup content={
+                    <Fragment>
+                        <LabelField name="Book genere:"/>
+                        <input className="form-control" onChange={e =>{this.setState({genere: e.target.value})}}/>
+                    </Fragment> 
+                }/>
             );
         }
 
@@ -52,7 +57,7 @@ class AddBook extends Component{
            return(
                <Fragment>
                     <LabelField name="Book author:"/>
-                    <select>
+                    <select className="form-control" onChange={e =>{this.setState({authorid: e.target.value})}}>
                         <option>Select author</option>
                         {this.displayAuthors()}
                     </select>
@@ -73,12 +78,16 @@ class AddBook extends Component{
         
 
         return (
-
-            <form id="add-book">
+            <form id="add-book" onSubmit={this.submitForm.bind(this)}>
                 {formContent()}
-                <button>+</button>
+                <button className="btn btn-dark">Add author</button>
             </form>
         );
+    }
+
+    submitForm(e){
+        e.preventDefault();
+        console.log(this.state);
     }
 }
 

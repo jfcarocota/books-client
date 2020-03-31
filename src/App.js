@@ -1,9 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import ApolloClient from 'apollo-boost';
 import {ApolloProvider} from '@apollo/react-hooks';
 
+import Container from './components/Container';
 import BookList from './components/BookList';
 import AddBook from './components/AddBook';
 
@@ -15,13 +17,16 @@ export default class App extends Component{
 
   render() {
     return (
-       <div id="main">
-         <h1>Books List</h1>
-         <ApolloProvider client={client}>
-            <AddBook/>
-            <BookList/>
-         </ApolloProvider>
-       </div>
+      <Container content={
+        <Fragment>
+          <h1>Books List</h1>
+          <ApolloProvider client={client}>
+              <AddBook/>
+              <br/>
+              <BookList/>
+          </ApolloProvider>
+        </Fragment>
+      }/>
     );
   }
 }
