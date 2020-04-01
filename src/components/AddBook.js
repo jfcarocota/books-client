@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import {graphql} from 'react-apollo';
+import * as compose from 'lodash.flowright';
 import FormField from './FormField';
 import LabelField from './LabelField';
-import {getAutohrsQuery} from '../queries';
+import {getAuthorsQuery, addBookMutation, getBooksQuery} from '../queries';
 import FormGroup from './FormGroup';
 
 
@@ -20,7 +21,7 @@ class AddBook extends Component{
     }
 
     displayAuthors(){
-        const data = this.props.data;
+        const data = this.props.getAuthorsQuery;
         if(data.loading){
             return <option disabled>Loading authors...</option>;
         }else{
@@ -87,8 +88,18 @@ class AddBook extends Component{
 
     submitForm(e){
         e.preventDefault();
-        console.log(this.state);
+        this.props.addBookMutation({
+            variables:{
+                name: this.state.name,
+                genere: this.state.genere,
+                authorid: this.state.authorid
+            },
+            refetchQueries: [{query: getBooksQuery}]
+        });
     }
 }
 
-export default graphql(getAutohrsQuery)(AddBook);
+export default compose(
+    graphql(getAuthorsQuery, {name: 'getAuthorsQuery'}),
+    graphql(addBookMutation, {name: 'addBookMutation'})
+)(AddBook);
