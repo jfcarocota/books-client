@@ -11,13 +11,7 @@ class BookList extends Component{
             return <div>Loading Books...</div>;
         }else{
             return data.books.map(book =>{
-                return <li key={book.id} className="list-group-item">
-                        {book.name}
-                        <ul className="list-group">
-                            <li className="list-group-item">Author: {book.author.name}</li>
-                            <li className="list-group-item">Genere: {book.genere}</li>
-                        </ul>
-                    </li>;
+                return <li key={book.id} className="list-group-item">{book.name}</li>;
             });
         }
     }
