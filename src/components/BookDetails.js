@@ -26,5 +26,4 @@ export default graphql(
                 id: props.bookid
             }
         }
-    }}
-)(BookDetails);
+    }})(BookDetails);
